@@ -1,4 +1,4 @@
-stm32duong\fonts.o: C:\Users\duong\Desktop\STM32-master\Core\Src\fonts.c
+stm32duong\fonts.o: ..\Core\Src\fonts.c
 stm32duong\fonts.o: ../Core/Inc/fonts.h
 stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 stm32duong\fonts.o: ../Core/Inc/stm32f1xx_hal_conf.h
@@ -26,7 +26,9 @@ stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc.h
 stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc_ex.h
 stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
+stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h
 stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h
 stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 stm32duong\fonts.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h

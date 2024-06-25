@@ -1,4 +1,4 @@
-stm32duong\ssd1306.o: C:\Users\duong\Desktop\STM32-master\Core\Src\ssd1306.c
+stm32duong\ssd1306.o: ..\Core\Src\ssd1306.c
 stm32duong\ssd1306.o: ../Core/Inc/ssd1306.h
 stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal.h
 stm32duong\ssd1306.o: ../Core/Inc/stm32f1xx_hal_conf.h
@@ -26,7 +26,9 @@ stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc.h
 stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc_ex.h
 stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
+stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h
 stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h
 stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 stm32duong\ssd1306.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h

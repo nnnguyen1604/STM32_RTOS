@@ -26,7 +26,9 @@ stm32duong\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc.h
 stm32duong\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_adc_ex.h
 stm32duong\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash.h
 stm32duong\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_flash_ex.h
+stm32duong\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_i2c.h
 stm32duong\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_pwr.h
+stm32duong\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_spi.h
 stm32duong\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim.h
 stm32duong\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_tim_ex.h
 stm32duong\main.o: ../Drivers/STM32F1xx_HAL_Driver/Inc/stm32f1xx_hal_uart.h
@@ -44,3 +46,8 @@ stm32duong\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h
 stm32duong\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h
 stm32duong\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h
 stm32duong\main.o: ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h
+stm32duong\main.o: ../Core/Inc/fonts.h
+stm32duong\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\string.h
+stm32duong\main.o: ../Core/Inc/ssd1306.h
+stm32duong\main.o: C:\Keil_v5\ARM\ARMCC\Bin\..\include\stdlib.h
+stm32duong\main.o: ../Core/Inc/nike.h

@@ -20,9 +20,13 @@
 #include "main.h"
 #include "cmsis_os.h"
 
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "fonts.h"
+#include "ssd1306.h"
+#include "nike.h"
+
+
 
 /* USER CODE END Includes */
 
@@ -33,7 +37,11 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define	 	ON	1
+#define		OFF	0
 
+#define		Device_Led			0
+#define		Device_Relay		1
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -43,11 +51,15 @@
 
 /* Private variables ---------------------------------------------------------*/
 ADC_HandleTypeDef hadc1;
+ADC_HandleTypeDef hadc2;
 DMA_HandleTypeDef hdma_adc1;
+
+I2C_HandleTypeDef hi2c1;
+
+SPI_HandleTypeDef hspi3;
 
 UART_HandleTypeDef huart1;
 DMA_HandleTypeDef hdma_usart1_tx;
-
 
 osThreadId Task01_ADC_DMAHandle;
 osThreadId Task02_DMA_UartHandle;
@@ -62,6 +74,9 @@ static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_USART1_UART_Init(void);
 static void MX_ADC1_Init(void);
+static void MX_ADC2_Init(void);
+static void MX_I2C1_Init(void);
+static void MX_SPI3_Init(void);
 void Task01_Adc_Dma(void const * argument);
 void Task02_Dma_Uart(void const * argument);
 void Task03_Blink_Led(void const * argument);
@@ -72,10 +87,8 @@ void Task03_Blink_Led(void const * argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint32_t adc_value[1];
 /* USER CODE END 0 */
-
-uint32_t adc_value[10];
 
 /**
   * @brief  The application entry point.
@@ -108,8 +121,11 @@ int main(void)
   MX_DMA_Init();
   MX_USART1_UART_Init();
   MX_ADC1_Init();
+  MX_ADC2_Init();
+  MX_I2C1_Init();
+  MX_SPI3_Init();
   /* USER CODE BEGIN 2 */
-
+	SSD1306_Init();
   /* USER CODE END 2 */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -250,6 +266,125 @@ static void MX_ADC1_Init(void)
 }
 
 /**
+  * @brief ADC2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_ADC2_Init(void)
+{
+
+  /* USER CODE BEGIN ADC2_Init 0 */
+
+  /* USER CODE END ADC2_Init 0 */
+
+  ADC_ChannelConfTypeDef sConfig = {0};
+
+  /* USER CODE BEGIN ADC2_Init 1 */
+
+  /* USER CODE END ADC2_Init 1 */
+
+  /** Common config
+  */
+  hadc2.Instance = ADC2;
+  hadc2.Init.ScanConvMode = ADC_SCAN_DISABLE;
+  hadc2.Init.ContinuousConvMode = DISABLE;
+  hadc2.Init.DiscontinuousConvMode = DISABLE;
+  hadc2.Init.ExternalTrigConv = ADC_SOFTWARE_START;
+  hadc2.Init.DataAlign = ADC_DATAALIGN_RIGHT;
+  hadc2.Init.NbrOfConversion = 1;
+  if (HAL_ADC_Init(&hadc2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+
+  /** Configure Regular Channel
+  */
+  sConfig.Channel = ADC_CHANNEL_1;
+  sConfig.Rank = ADC_REGULAR_RANK_1;
+  sConfig.SamplingTime = ADC_SAMPLETIME_1CYCLE_5;
+  if (HAL_ADC_ConfigChannel(&hadc2, &sConfig) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN ADC2_Init 2 */
+
+  /* USER CODE END ADC2_Init 2 */
+
+}
+
+/**
+  * @brief I2C1 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_I2C1_Init(void)
+{
+
+  /* USER CODE BEGIN I2C1_Init 0 */
+
+  /* USER CODE END I2C1_Init 0 */
+
+  /* USER CODE BEGIN I2C1_Init 1 */
+
+  /* USER CODE END I2C1_Init 1 */
+  hi2c1.Instance = I2C1;
+  hi2c1.Init.ClockSpeed = 400000;
+  hi2c1.Init.DutyCycle = I2C_DUTYCYCLE_2;
+  hi2c1.Init.OwnAddress1 = 0;
+  hi2c1.Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
+  hi2c1.Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;
+  hi2c1.Init.OwnAddress2 = 0;
+  hi2c1.Init.GeneralCallMode = I2C_GENERALCALL_DISABLE;
+  hi2c1.Init.NoStretchMode = I2C_NOSTRETCH_DISABLE;
+  if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN I2C1_Init 2 */
+
+  /* USER CODE END I2C1_Init 2 */
+
+}
+
+/**
+  * @brief SPI3 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_SPI3_Init(void)
+{
+
+  /* USER CODE BEGIN SPI3_Init 0 */
+
+  /* USER CODE END SPI3_Init 0 */
+
+  /* USER CODE BEGIN SPI3_Init 1 */
+
+  /* USER CODE END SPI3_Init 1 */
+  /* SPI3 parameter configuration*/
+  hspi3.Instance = SPI3;
+  hspi3.Init.Mode = SPI_MODE_MASTER;
+  hspi3.Init.Direction = SPI_DIRECTION_2LINES;
+  hspi3.Init.DataSize = SPI_DATASIZE_8BIT;
+  hspi3.Init.CLKPolarity = SPI_POLARITY_LOW;
+  hspi3.Init.CLKPhase = SPI_PHASE_1EDGE;
+  hspi3.Init.NSS = SPI_NSS_SOFT;
+  hspi3.Init.BaudRatePrescaler = SPI_BAUDRATEPRESCALER_2;
+  hspi3.Init.FirstBit = SPI_FIRSTBIT_MSB;
+  hspi3.Init.TIMode = SPI_TIMODE_DISABLE;
+  hspi3.Init.CRCCalculation = SPI_CRCCALCULATION_DISABLE;
+  hspi3.Init.CRCPolynomial = 10;
+  if (HAL_SPI_Init(&hspi3) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN SPI3_Init 2 */
+
+  /* USER CODE END SPI3_Init 2 */
+
+}
+
+/**
   * @brief USART1 Initialization Function
   * @param None
   * @retval None
@@ -308,6 +443,7 @@ static void MX_DMA_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
 /* USER CODE END MX_GPIO_Init_1 */
 
@@ -315,12 +451,175 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOD_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12, GPIO_PIN_RESET);
+
+  /*Configure GPIO pins : PC13 PC6 PC7 PC8
+                           PC9 PC10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13|GPIO_PIN_6|GPIO_PIN_7|GPIO_PIN_8
+                          |GPIO_PIN_9|GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PC12 */
+  GPIO_InitStruct.Pin = GPIO_PIN_12;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
 }
 
 /* USER CODE BEGIN 4 */
+
+void ActuatorsActivation (char Devices, char Status)
+{
+	switch(Devices){
+		case Device_Led: if(Status == 1) HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12 , GPIO_PIN_SET);
+					else	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12 , GPIO_PIN_RESET);
+			break;
+		case Device_Relay:  if(Status == 1) HAL_GPIO_WritePin(GPIOC, GPIO_PIN_12 , GPIO_PIN_SET);
+					else	HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13 , GPIO_PIN_RESET);
+			break;
+	
+	}
+}
+
+void tempValue ()
+{
+	uint16_t value_light;
+
+		HAL_ADCEx_Calibration_Start(&hadc2);
+		float k;
+
+		HAL_ADC_Start(&hadc2);
+		HAL_ADC_PollForConversion(&hadc2, 1000);
+		value_light = HAL_ADC_GetValue(&hadc2);
+		k = (value_light / 4096.0) * 3.3 * 100.0;
+		char snum_light[10];
+		sprintf(snum_light, "%.2f", k);
+		
+		SSD1306_Clear();
+		SSD1306_GotoXY(0, 30);
+		SSD1306_Puts("LIGHT:", &Font_11x18, 1);
+		SSD1306_GotoXY(60, 30);
+		SSD1306_Puts(snum_light, &Font_11x18, 1);
+
+		SSD1306_UpdateScreen();
+}
+
+
+void SensorActivation (char Devices, char Status)
+{
+	switch(Devices){
+		case Device_Led: if(Status == 1) tempValue();
+					
+			break;
+		case Device_Relay: if(Status == 1) tempValue();
+					
+			break;
+	
+	}
+}
+
+
+typedef struct Linker{
+	char MenuID;
+	struct Linker *pre;
+	char Title[20];
+	char List1[20];
+	struct Linker *Menulist1; 	void (*ActivationON)(char, char);
+	char List2[20];
+	struct Linker *Menulist2;	void (*ActivationOFF)(char, char);
+	
+} Menu;
+Menu MainMenu, SensorMenu, ActuatorMenu, LightMenu, TempMenu, RelayMenu, MotorMenu;
+
+
+Menu MainMenu = {
+	NULL,
+	NULL,
+	"Menu",  
+	"  Sensor",  	&SensorMenu,	 	NULL,
+	"  Actuator",	&ActuatorMenu, 	NULL,
+};
+
+/*--------------------------------------------------------------------------------------*/
+Menu  ActuatorMenu= {
+	NULL,
+	&MainMenu,
+	"Actuator",
+	"  Motor    ",&MotorMenu,	NULL,
+	"  Relay    ", &RelayMenu,		NULL,
+};
+
+Menu  MotorMenu= {
+	NULL,
+	&ActuatorMenu,
+	"Actuator",
+	"  ON      ",	NULL,		&ActuatorsActivation,
+	"  OFF      ", 	NULL,		&ActuatorsActivation,
+};
+ 
+Menu  RelayMenu= {
+	NULL,
+	&ActuatorMenu,
+	"Actuator",
+	"  ON      ",	NULL,		&ActuatorsActivation,
+	"  OFF      ",	NULL,		&ActuatorsActivation,
+};
+
+/*--------------------------------------------------------------------------------------*/
+Menu SensorMenu = {
+	NULL,
+	&MainMenu,
+	"Menu",
+	"  Temp      ",	&TempMenu,		NULL,
+	"  Light      ", 	&LightMenu,		NULL,
+};
+
+Menu TempMenu = {
+	Device_Relay,
+	&SensorMenu,
+	"Sensor",
+	"  ON      ",	NULL,		&SensorActivation,
+	"  OFF      ", 	NULL,		&SensorActivation,
+};
+
+Menu LightMenu = {
+	Device_Led,
+	&SensorMenu,
+	"Sensor",
+	"  ON      ",	NULL,		&SensorActivation,
+	"  OFF      ",	NULL,		&SensorActivation,
+};
+
+
+void MenuDisplay(Menu *menu, unsigned char select)
+{
+	SSD1306_Clear();
+	SSD1306_GotoXY(0, 0);
+	SSD1306_Puts(menu->Title, &Font_11x18, 1);
+				
+	SSD1306_GotoXY(0, 22);
+	SSD1306_Puts(menu->List1, &Font_11x18, 1);
+	
+	SSD1306_GotoXY(0, 45);
+	SSD1306_Puts(menu->List2, &Font_11x18, 1);
+	
+	SSD1306_GotoXY(0, select*22);
+	SSD1306_Puts(">", &Font_11x18, 1);
+	
+	SSD1306_UpdateScreen();
+}
+
+
+
 
 /* USER CODE END 4 */
 
@@ -354,10 +653,92 @@ void Task01_Adc_Dma(void const * argument)
 void Task02_Dma_Uart(void const * argument)
 {
   /* USER CODE BEGIN Task02_Dma_Uart */
+	unsigned char select = 1;
+	Menu *menu;
+	menu = &MainMenu;
+	MenuDisplay(menu, select);
+
   /* Infinite loop */
+	
   for(;;)
   {
-	 HAL_UART_Transmit_DMA(&huart1, (const uint8_t *)&adc_value, 1);
+		
+	  	if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_6) ==  GPIO_PIN_SET){
+			
+					select = (select == 2)?1:select+1;
+					MenuDisplay(menu, select);
+					
+			}
+		
+		  if (HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_7) == GPIO_PIN_SET){
+
+					select = (select == 1)?2:select - 1;
+					MenuDisplay(menu, select);
+			}  
+		  
+		  if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_8)== GPIO_PIN_SET){
+					switch (select){
+						
+						case 1: 
+							menu = (menu->Menulist1 == NULL) ? menu : menu->Menulist1; 
+							break;
+						case 2: 
+							menu = (menu->Menulist1 == NULL) ? menu : menu->Menulist2;
+							break;
+						
+					}
+				MenuDisplay(menu, select);
+			}
+		  
+			
+			if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_9)== GPIO_PIN_SET){
+				menu = (menu->pre == NULL) ? menu : menu->pre; 
+				MenuDisplay(menu, select);
+			 }
+			
+			 
+			 if(HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_10)== GPIO_PIN_SET){
+				switch (select){
+					
+						case 1: 
+							if(menu->ActivationON!=NULL) menu->ActivationON(menu->MenuID, ON);
+							
+							break;
+						case 2: 
+							if(menu->ActivationOFF!=NULL) menu->ActivationOFF(menu->MenuID, OFF);
+							break;
+					
+					}
+			 }
+			 
+			
+	 //uint32_t adc_result = adc_value[0];
+	 //HAL_UART_Transmit_DMA(&huart1, (const uint8_t *)&adc_value, 1);  // PA9
+
+	  /*
+	  if(flag == 1){
+		uint16_t value_light;
+
+		HAL_ADCEx_Calibration_Start(&hadc2);
+		float k;
+
+		HAL_ADC_Start(&hadc2);
+		HAL_ADC_PollForConversion(&hadc2, 1000);
+		value_light = HAL_ADC_GetValue(&hadc2);
+		k = (value_light / 4096.0) * 3.3 * 100.0;
+		char snum_light[10];
+		sprintf(snum_light, "%.2f", k);
+	  
+		SSD1306_GotoXY(0, 30);
+		SSD1306_Puts("LIGHT:", &Font_11x18, 1);
+		SSD1306_GotoXY(60, 30);
+		SSD1306_Puts(snum_light, &Font_11x18, 1);
+
+		SSD1306_UpdateScreen();
+		}
+	  */
+		
+		
     osDelay(10);
   }
   /* USER CODE END Task02_Dma_Uart */
@@ -370,25 +751,21 @@ void Task02_Dma_Uart(void const * argument)
 * @retval None
 */
 /* USER CODE END Header_Task03_Blink_Led */
-void delay_ms(uint16_t t)
-{
-	volatile unsigned long l = 0;
-	for(uint16_t i = 0; i < t; i++)
-		for(l = 0; l < 6000; l++)
-		{
-		}
-}
-
 void Task03_Blink_Led(void const * argument)
 {
- /* USER CODE BEGIN Task03_Blink_Led */
+  /* USER CODE BEGIN Task03_Blink_Led */
   /* Infinite loop */
 	RCC->APB2ENR |= 0xFC; /* Enable clocks forGPIO ports */
 	GPIOA->CRL = 0x44444344; /* PA2 as output */
   for(;;)
   {
+	  
 	GPIOA->ODR ^= (1<<2); /* toggle PA2 */
-	delay_ms(1000);
+	volatile unsigned long l = 0;
+	for(uint16_t i = 0; i < 100; i++)
+		for(l = 0; l < 6000; l++)
+		{
+		}
 	osDelay(10);
   }
   /* USER CODE END Task03_Blink_Led */
